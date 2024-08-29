@@ -3,6 +3,7 @@ package com.mini.banking.demo.service.delivery.transaction;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,8 +34,13 @@ public class TransactionController {
         return transactionInteractor.initiateMoneyTransfer(fromAccountId, toAccountId, amount);
     }
 
-    @GetMapping("/account/{accountId}")
-    public ResponseEntity<Response<List<TransactionDto>>> getTransactionHistory(@PathVariable int accountId) {
-        return transactionInteractor.getTransactionHistory(accountId);
+    @GetMapping("/history/{accountId}")
+    public ResponseEntity<Page<TransactionDto>> getTransactionHistory(
+            @PathVariable int accountId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Page<TransactionDto> transactions = transactionInteractor.getTransactionHistory(accountId, page, size);
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 }

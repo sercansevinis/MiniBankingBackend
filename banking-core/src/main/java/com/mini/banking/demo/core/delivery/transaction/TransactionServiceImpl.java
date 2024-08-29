@@ -1,6 +1,9 @@
 package com.mini.banking.demo.core.delivery.transaction;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.mini.banking.demo.core.common.enumType.TransactionStatus;
@@ -89,8 +92,15 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionDto> getTransactionHistory(int accountId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTransactionHistory'");
-    }
+public Page<TransactionDto> getTransactionHistory(int accountId, int page, int size) {
+    // Use a pageable object to define the page and size
+    Pageable pageable = PageRequest.of(page, size);
+
+    // Retrieve a paginated list of transactions where the account is either the 'from' or 'to' account
+    Page<Transaction> transactionsPage = transactionBackEnd.getTransactionsByAccountId(accountId, pageable);
+
+    // Convert the Page of Transaction entities to a Page of TransactionDto objects
+    return transactionsPage.map(transactionDtoConverter::convertDataToDto);
+}
+}
 }

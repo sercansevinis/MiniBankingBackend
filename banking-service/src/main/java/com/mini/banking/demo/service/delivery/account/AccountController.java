@@ -33,8 +33,8 @@ public class AccountController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<Response<AccountDto>> searchAccounts(@RequestParam(required = false) String name,
-            @RequestParam(required = false) String number) {
+    public ResponseEntity<Response<AccountDto>> searchAccounts(@RequestParam(required = true) String name,
+            @RequestParam(required = true) String number) {
         return accountInteractor.search(name, number);
     }
 

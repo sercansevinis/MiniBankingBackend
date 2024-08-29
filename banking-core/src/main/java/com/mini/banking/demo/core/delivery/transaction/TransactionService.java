@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+
 import com.mini.banking.demo.core.delivery.account.Account;
 
 public interface TransactionService {
@@ -24,5 +26,5 @@ public interface TransactionService {
 
     TransactionDto initiateMoneyTransfer(int fromAccountId, int toAccountId, BigDecimal amount);
 
-    List<TransactionDto> getTransactionHistory(int accountId);
+    Page<TransactionDto> getTransactionHistory(int accountId, int page, int size);
 }

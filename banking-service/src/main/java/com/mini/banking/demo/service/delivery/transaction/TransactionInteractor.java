@@ -1,5 +1,6 @@
 package com.mini.banking.demo.service.delivery.transaction;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -30,8 +31,7 @@ public class TransactionInteractor {
         return transactionPresenter.prepareSuccessView(transactionDto);
     }
 
-    public ResponseEntity<Response<List<TransactionDto>>> getTransactionHistory(int accountId) {
-        List<TransactionDto> transactionHistory = transactionService.getTransactionHistory(accountId);
-        return transactionListPresenter.prepareSuccessView(transactionHistory);
+    public Page<TransactionDto> getTransactionHistory(int accountId, int page, int size) {
+        return transactionService.getTransactionHistory(accountId, page, size);
     }
 }
